@@ -1,208 +1,147 @@
-# Oriux
+# Oriux: A DIY Physical Weather Station
 
-![Oriux Weather Display](photo/IMG20250919230113.jpg)
-[IMG20250919230113.jpg](photo/IMG20250919230113.jpg)
+![Oriux Weather Display](photo/IMG20250920143954.jpg)
 
-Oriux is a simple weather widget that runs on the ESP32-2432S028R (ILI9341, 2.8" touch) a.k.a. Cheap Yellow Display (CYD). It shows current conditions, a 5‑day forecast, and room temperature/humidity with a DHT22 sensor, using LVGL for the UI.
+Oriux is a simple weather widget that runs on the **ESP32-2432S028R** (ILI9341, 2.8" touch), also known as the "Cheap Yellow Display" (CYD). It shows current conditions, a 5‑day forecast, and room temperature/humidity from a DHT22 sensor, using LVGL for the UI.
 
---------------------------------------------------------------------------------
+## Quick Start Guide
 
-Quick Start
+This guide provides step-by-step instructions to get your Oriux weather station running.
 
-1) Hardware
-- ESP32-2432S028R development board (2.8" ILI9341 touch)
-- DHT22 AM2302 temperature/humidity module
-  - Wiring used by firmware:
-    - DHT22 signal → ESP32 GPIO 22
-    - DHT22 VCC → 3.3V
-    - DHT22 GND → GND
-    - If you’re using a bare DHT22 (not a module), add a 10k pull-up from signal to 3.3V.
+### Hardware Requirements
 
-2) Software
-- Arduino IDE (2.x recommended)
+*   **ESP32-2432S028R** development board (2.8" ILI9341 touch screen).
+*   **DHT22 (AM2302)** temperature/humidity module.
+*   **90 degree USB-C to USB-C adapter**
+*   **Wiring:**
+    *   DHT22 signal → ESP32 GPIO 22
+    *   DHT22 VCC → 3.3V
+    *   DHT22 GND → GND
+All items can purchased on Aliexpress for ~20-25 EUR. 
 
-3) Open the project
-- Start Arduino IDE.
-- File → Open → select [weather.ino](weather/weather.ino) directly from this repository.
-- Note: do not copy the weather/ folder into your Arduino sketchbook. Build from this repo in place.
+![Requirements](photo/requirements.png)
 
-4) Install ESP32 boards support (one-time in Arduino IDE)
-- File → Preferences → “Additional Boards Manager URLs” → add:
-  https://dl.espressif.com/dl/package_esp32_index.json
-- Tools → Board → Boards Manager… → search “esp32” by Espressif → Install.
+### Software Requirements
 
-5) Install required libraries (exact versions)
-- Arduino IDE → Sketch → Include Library → Manage Libraries… then install:
-  - ArduinoJson 7.4.1
-  - HttpClient 2.2.0
-  - TFT_eSPI 2.5.43
-  - WiFiManager 2.0.17
-  - XPT2046_Touchscreen 1.4
-  - lvgl 9.2.2
-  - DHT sensor library 1.4.6
-  - Adafruit Unified Sensor 1.1.14
+*   **Arduino IDE** (version 2.x or newer is recommended).
 
-6) Copy the provided LVGL and TFT_eSPI config files
-Install the libraries first so their folders exist, then overwrite the files below.
+### Project Setup and Installation
 
-- Copy [User_Setup.h](TFT_eSPI/User_Setup.h) → TFT_eSPI library config:
-  - Windows: C:\Users\YOUR_USER\Documents\Arduino\libraries\TFT_eSPI\User_Setup.h
-  - Linux:  ~/Arduino/libraries/TFT_eSPI/User_Setup.h
+1.  **Open the Project:**
+    *   Start the Arduino IDE.
+    *   Go to `File` → `Open` and select the `weather/weather.ino` file directly from this repository.
+    *   **Important:** Do not copy the `weather/` folder into your Arduino sketchbook. The project should be built from its repository location.
 
-- Copy [lv_conf.h](lvgl/src/lv_conf.h) → LVGL library config:
-  - Windows: C:\Users\YOUR_USER\Documents\Arduino\libraries\lvgl\src\lv_conf.h
-  - Linux:  ~/Arduino/libraries/lvgl/src/lv_conf.h
+2.  **Install ESP32 Board Support:** (One-time setup)
+    *   Go to `File` → `Preferences`.
+    *   In the "Additional Boards Manager URLs" field, add the following URL:
+        ```
+        https://dl.espressif.com/dl/package_esp32_index.json
+        ```
+    *   Go to `Tools` → `Board` → `Boards Manager...`, search for "**esp32**" by Espressif, and click **Install**.
 
-Notes:
-- Overwrite existing files when prompted.
-- Restart Arduino IDE after copying.
+3.  **Install Required Libraries:**
+    *   In the Arduino IDE, go to `Sketch` → `Include Library` → `Manage Libraries...`.
+    *   Install the following libraries, ensuring you select the exact versions specified:
+        *   `ArduinoJson` version **7.4.1**
+        *   `HttpClient` version **2.2.0**
+        *   `TFT_eSPI` version **2.5.43**
+        *   `WiFiManager` version **2.0.17**
+        *   `XPT2046_Touchscreen` version **1.4**
+        *   `lvgl` version **9.2.2**
+        *   `DHT sensor library` version **1.4.6**
+        *   `Adafruit Unified Sensor` version **1.1.14**
 
-7) Arduino IDE settings
-- Tools → Board: “ESP32 Dev Module”
-- Tools → Partition Scheme: “Huge App (3MB No OTA/1MB SPIFFS)”
-- Keep other defaults.
+4.  **Copy Configuration Files:**
+    *   After installing the libraries, you must copy the provided configuration files into the library folders to overwrite the defaults.
+    *   **TFT_eSPI Config:**
+        *   Copy `TFT_eSPI/User_Setup.h` from this repository.
+        *   Paste and overwrite it at:
+            *   **Windows:** `C:\Users\YOUR_USER\Documents\Arduino\libraries\TFT_eSPI\User_Setup.h`
+            *   **Linux:** `~/Arduino/libraries/TFT_eSPI/User_Setup.h`
+    *   **LVGL Config:**
+        *   Copy `lvgl/src/lv_conf.h` from this repository.
+        *   Paste and overwrite it at:
+            *   **Windows:** `C:\Users\YOUR_USER\Documents\Arduino\libraries\lvgl\src\lv_conf.h`
+            *   **Linux:** `~/Arduino/libraries/lvgl/src/lv_conf.h`
+    *   **Note:** Restart the Arduino IDE after copying the files.
 
-8) Build and upload
-- Connect the ESP32-2432S028R via USB.
-- Click Verify (compile). Then click Upload.
-- Open Serial Monitor at 115200 baud if needed.
+### Build and Upload
 
-9) First run and Wi‑Fi setup
-- On first boot the device starts a Wi‑Fi AP named “Oriux”.
-- Connect to it and open http://192.168.4.1
-- Enter your Wi‑Fi credentials. Device will reboot and display weather shortly.
+1.  **Set Board Configuration:**
+    *   `Tools` → `Board`: Select **"ESP32 Dev Module"**.
+    *   `Tools` → `Partition Scheme`: Select **"Huge App (3MB No OTA/1MB SPIFFS)"**.
 
---------------------------------------------------------------------------------
+2.  **Build and Upload:**
+    *   Connect your **ESP32-2432S028R** board to your computer via USB.
+    *   Click the **Verify** button (checkmark icon) to compile the sketch.
+    *   Click the **Upload** button (right arrow icon) to flash the firmware to the device.
+    *   You can open the **Serial Monitor** at **115200 baud** to view debug output.
 
-Generating or modifying fonts (optional)
+### First-Time Wi-Fi Setup
 
-This project ships with prebuilt LVGL fonts for English and Lithuanian. If you change font, size, or Unicode coverage, regenerate the font C files.
+*   On its first boot, the device will create a Wi-Fi Access Point named **"Oriux"**.
+*   Connect to this network from your phone or computer.
+*   A captive portal should open automatically. If not, open a web browser and navigate to `http://192.168.4.1`.
+*   Follow the on-screen instructions to connect the device to your local Wi-Fi network. It will save the credentials and reboot.
 
-What you need
-- Node.js + npm (to run lv_font_conv via npx)
-- Python 3
+## 3D-Printed Housing
 
-Files to use
-- Font generator script: [font_generator.py](FONT/font_generator.py)
-- Default font file: [Typo Grotesk Rounded.otf](FONT/Typo Grotesk Rounded.otf)
-- Required glyph list (editable): [required_chars.txt](weather/required_chars.txt)
-- Optional helper to extract used characters: [extract_unicode_chars.py](weather/extract_unicode_chars.py)
+A custom-designed enclosure is available for this project.
 
-Steps
-1) Edit [font_generator.py](FONT/font_generator.py)
-   - Set font_path to the absolute path of your font file, for example:
-     - On Windows: "C:\\Users\\YOUR_USER\\...\\Typo Grotesk Rounded.otf"
-     - On Linux: "/home/YOUR_USER/.../Typo Grotesk Rounded.otf"
-   - Or point it to the repo font: [Typo Grotesk Rounded.otf](FONT/Typo Grotesk Rounded.otf)
+*   **Models:**
+    *   `3D_models/Oriux_3D_model.stl`: Standard file for most slicers.
+    *   `3D_models/Oriux_3D_model.3mf`: Recommended for Bambu Lab printers, includes settings for a multi-color logo with an AMS.
+*   **Print Settings:**
+    *   **Material:** PLA
+    *   **Layer Height:** 0.12 mm
+    *   **Build Plate:** Smooth High-Temperature Plate recommended.
+*   **More Info:**
+    *   For a generic version without the logo and for full assembly instructions, visit the project page on MakerWorld: [Oriux Smart Weather Forecast Display](https://makerworld.com/en/models/1382304-oriux-smart-weather-forecast-display).
 
-2) Ensure “lv_font_conv” is available to npx
-   - Option A (recommended): use npx automatically during the script run
-   - Option B: npm install -g lv_font_conv
+## Advanced Section
 
-3) Run the generator
-   - From the repository root:
-     - Windows/Linux: python FONT/font_generator.py
+### Generating Custom Fonts (Optional)
 
-4) Results
-   - New C files are written into [weather/](weather/) e.g.:
-     - [lv_font_typo_grotesk_rounded_12.c](weather/lv_font_typo_grotesk_rounded_12.c)
-     - [lv_font_typo_grotesk_rounded_14.c](weather/lv_font_typo_grotesk_rounded_14.c)
-     - [lv_font_typo_grotesk_rounded_16.c](weather/lv_font_typo_grotesk_rounded_16.c)
-     - [lv_font_typo_grotesk_rounded_20.c](weather/lv_font_typo_grotesk_rounded_20.c)
-     - [lv_font_typo_grotesk_rounded_42.c](weather/lv_font_typo_grotesk_rounded_42.c)
+The firmware includes pre-rendered fonts for English and Lithuanian. If you wish to use a different font, change sizes, or add new characters, you must regenerate the font files.
 
-5) Updating the code (if you changed names/sizes)
-   - Font declarations live near the top of [weather.ino](weather/weather.ino):
-     - [LV_FONT_DECLARE(lv_font_typo_grotesk_rounded_12)](weather/weather.ino:40)
-   - Font selection helpers are defined here:
-     - [get_font_12()](weather/weather.ino:49)
+*   **Requirements:**
+    *   Node.js and npm (for `npx`).
+    *   Python 3.
+*   **Process:**
+    1.  Edit the `font_path` in `FONT/font_generator.py` to point to your `.otf` or `.ttf` font file.
+    2.  Modify the character list in `weather/required_chars.txt` if needed.
+    3.  Run the script from the repository root: `python FONT/font_generator.py`.
+    4.  The script will generate new `.c` files in the `weather/` directory.
+    5.  If you change font names or sizes, update the `LV_FONT_DECLARE` statements and `get_font_*` functions in `weather/weather.ino`.
 
---------------------------------------------------------------------------------
+### Project Details
 
-Notes, pins, and drivers
+*   **Pin Configuration:** Display and touch pins are defined in `TFT_eSPI/User_Setup.h`.
+*   **LVGL Configuration:** UI settings are controlled by `lvgl/src/lv_conf.h`.
+*   **Validation:** After flashing, check that the device boots, the captive portal works, all settings are functional, and sensor data is displayed correctly.
 
-- Display and touch pins are configured in [User_Setup.h](TFT_eSPI/User_Setup.h). Defaults used:
-  - TFT_MISO: 12, TFT_MOSI: 13, TFT_SCLK: 14
-  - TFT_CS: 15, TFT_DC: 2, TFT_RST: -1 (tied to board reset)
-  - TOUCH_CS: 33, Backlight: GPIO 21
-- LVGL is configured via [lv_conf.h](lvgl/src/lv_conf.h). LV_COLOR_DEPTH=16, ILI9341 enabled.
+## Credits and License
 
---------------------------------------------------------------------------------
+*   **Code (`weather.ino`):** Licensed under the [GPL-3.0 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
+*   **Icons:** Weather icons are from [google-weather-icons](https://github.com/mrdarrengriffin/google-weather-icons/tree/main/v2) and are not covered by the GPL license.
+*   **Libraries and Resources:** This project relies on the great work from LVGL, TFT_eSPI, witnessmenow, Random Nerd Tutorials, and the creators of the Arduino libraries listed above.
 
-3D-printed housing
+## Repository File Structure
 
-Models
-- [Oriux_3D_model.stl](3D_models/Oriux_3D_model.stl) - For any other software.
-- [Oriux_3D_model.3mf](3D_models/Oriux_3D_model.3mf) - If you have Bambu printer. Recommended. AMS recomended to have logo. 
+### Core Files
+*   `README.md`: This file.
+*   `3D_models/`: Contains `.stl` and `.3mf` files for the enclosure.
+*   `FONT/`: Tools and source font for generating custom LVGL fonts.
+*   `lvgl/`, `TFT_eSPI/`: Pre-configured library files for this specific hardware.
+*   `photo/`: Images for the README.
+*   `weather/`: The main Arduino sketch and its components.
+    *   `weather.ino`: The main application source code.
+    *   `translations.h`: Language definitions.
+    *   `required_chars.txt`: Characters to include in the font.
+    *   `extract_unicode_chars.py`: A helper script for font generation.
 
-Recommended print settings:
-- Material: PLA
-- Layer height: 0.12 mm
-- Plate: Smooth high temperature
-
-Generic version wihout the logo:
-- https://makerworld.com/en/models/1382304-oriux-smart-weather-forecast-display
-
---------------------------------------------------------------------------------
-
-Validation checklist (after flashing)
-- Device boots and shows splash/setup screen
-- Captive portal reachable at http://192.168.4.1
-- Location search, brightness, language, units (°C/°F), 12/24h toggles working
-- DHT22 readings visible on screen
-- 5-day forecast shows icons and values
-- Night mode dims screen between 22:00 and 06:00 (configurable in code)
-
---------------------------------------------------------------------------------
-
-Credits
-- Project is based on:
-  - MakerWorld project page: https://makerworld.com/en/models/1382304-oriux-smart-weather-forecast-display
-- Weather icons: https://github.com/mrdarrengriffin/google-weather-icons/tree/main/v2
-- LVGL UI framework: https://lvgl.io/
-- CYD reference and tooling by witnessmenow:
-  - https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display
-  - https://github.com/witnessmenow/ESP-Web-Tools-Tutorial
-- Random Nerd Tutorials LVGL resources:
-  - https://randomnerdtutorials.com/esp32-cyd-lvgl-line-chart/
-- Libraries:
-  - ArduinoJson: https://arduinojson.org/
-  - HttpClient: https://github.com/amcewen/HttpClient
-  - TFT_eSPI: https://github.com/Bodmer/TFT_eSPI
-  - WiFiManager: https://github.com/tzapu/WiFiManager
-  - XPT2046_Touchscreen: https://github.com/PaulStoffregen/XPT2046_Touchscreen
-  - LVGL: https://lvgl.io/
-
-License
-- Code in [weather.ino](weather/weather.ino) is GPL-3.0.
-- Icons not covered by GPL; see Credits.
-
---------------------------------------------------------------------------------
-
-Full repository file tree (core)
-
-- [README.md](README.md)
-- [3D_models/](3D_models/)
-  - [Oriux_3D_model.3mf](3D_models/Oriux_3D_model.3mf)
-  - [Oriux_3D_model.stl](3D_models/Oriux_3D_model.stl)
-- [FONT/](FONT/)
-  - [font_generator.py](FONT/font_generator.py)
-  - [Typo Grotesk Rounded.otf](FONT/Typo Grotesk Rounded.otf)
-- [lvgl/](lvgl/)
-  - [src/](lvgl/src/)
-    - [lv_conf.h](lvgl/src/lv_conf.h)
-- [photo/](photo/)
-  - [IMG20250919230113.jpg](photo/IMG20250919230113.jpg)
-- [TFT_eSPI/](TFT_eSPI/)
-  - [User_Setup.h](TFT_eSPI/User_Setup.h)
-- [weather/](weather/)
-  - [weather.ino](weather/weather.ino)
-  - [translations.h](weather/translations.h)
-  - [required_chars.txt](weather/required_chars.txt)
-  - [extract_unicode_chars.py](weather/extract_unicode_chars.py)
-
-Helper assets and generated files (not individually listed)
-
-- Weather icon assets in [weather/](weather/): files prefixed with "icon_" (*.c)
-- Weather image assets in [weather/](weather/): files prefixed with "image_" (*.c)
-- Generated fonts in [weather/](weather/): files prefixed with "lv_font_typo_grotesk_rounded_" (*.c)
+### Helper Assets (in `weather/` directory)
+*   **Weather Icons:** `icon_*.c` files.
+*   **Weather Images:** `image_*.c` files.
+*   **Generated Fonts:** `lv_font_typo_grotesk_rounded_*.c` files.

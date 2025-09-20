@@ -73,7 +73,7 @@ int x, y, z;
 
 // Preferences
 static Preferences prefs;
-static bool use_24_hour = false; 
+static bool use_24_hour = true;
 static bool use_night_mode = false;
 static int locationId = LOCATION_ID_DEFAULT;
 static String location = String(LOCATION_DEFAULT);
@@ -355,7 +355,7 @@ void setup() {
   location = prefs.getString("location", LOCATION_DEFAULT);
   use_night_mode = prefs.getBool("useNightMode", false);
   uint32_t brightness = prefs.getUInt("brightness", 255);
-  use_24_hour = prefs.getBool("use24Hour", false);
+  use_24_hour = prefs.getBool("use24Hour", true);
   current_language = (Language)prefs.getUInt("language", LANG_LT);
   analogWrite(LCD_BACKLIGHT_PIN, brightness);
 

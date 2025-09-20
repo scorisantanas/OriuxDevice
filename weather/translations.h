@@ -43,7 +43,7 @@ struct LocalizedStrings {
 static const LocalizedStrings strings_en = {
   "--°C", "Feels Like", "FIVE DAY FORECAST",
   "Current room temp", "Current room humidity", "HOURLY FORECAST",
-  "Today", "Now", "am", "pm", "Noon", "Invalid hour",
+  "Today", "Now", "AM", "PM", "Noon", "Invalid hour",
   "Brightness:", "Location:", "24hr:",
   "Save", "Cancel", "Close", "Location", "Reset Wi-Fi",
   "Reset", "Change Location", "Oriux Settings",
@@ -73,7 +73,7 @@ static const LocalizedStrings strings_en = {
 static const LocalizedStrings strings_lt = {
   "--°C", "Jaučiasi kaip", "5 DIENŲ PROGNOZĖ",
   "Kambario temperatūra", "Kambario drėgmė", "VALANDINĖ PROGNOZĖ",
-  "Šiandien", "Dabar", "ryto", "vakaro", "Vidurdienis", "Neteisinga valanda",
+  "Šiandien", "Dabar", "AM", "PM", "Vidurdienis", "Neteisinga valanda",
   "Ryškumas:", "Vieta:", "24 val. formatas:",
   "Išsaugoti", "Atšaukti", "Uždaryti", "Vieta", "Atstatyti Wi-Fi",
   "Atstatyti", "Keisti vietą", "Oriux Nustatymai",
