@@ -126,6 +126,7 @@ The firmware includes pre-rendered fonts for English and Lithuanian. If you wish
 *   **Code (`weather.ino`):** Licensed under the [GPL-3.0 License](https://www.gnu.org/licenses/gpl-3.0.en.html).
 *   **Icons:** Weather icons are from [google-weather-icons](https://github.com/mrdarrengriffin/google-weather-icons/tree/main/v2) and are not covered by the GPL license.
 *   **Libraries and Resources:** This project relies on the great work from LVGL, TFT_eSPI, witnessmenow, Random Nerd Tutorials, and the creators of the Arduino libraries listed above.
+*   **Original 3D model and idea author:** [Aura, Smart Weather Forecast Display](https://makerworld.com/en/models/1382304-aura-smart-weather-forecast-display).
 
 ## Repository File Structure
 
