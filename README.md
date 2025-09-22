@@ -90,14 +90,14 @@ All items can purchased on Aliexpress for ~20-25 EUR.
 A custom-designed enclosure is available for this project.
 
 *   **Models:**
-    *   `3D_models/Oriux_3D_model.stl`: Standard file for most slicers.
-    *   `3D_models/Oriux_3D_model.3mf`: Recommended for Bambu Lab printers, includes settings for a multi-color logo with an AMS.
+    *   `3D_models/Oriux_3D_model.stl`: Standard file for most slicers. [STL LINK](https://github.com/scorisantanas/OriuxDevice/blob/master/3D_models/Oriux_3D_model.stl)
+    *   `3D_models/Oriux_3D_model.3mf`: Recommended for Bambu Lab printers, includes settings for a multi-color logo with an AMS. [3MF LINK](https://github.com/scorisantanas/OriuxDevice/blob/master/3D_models/Oriux_3D_model.3mf)
 *   **Print Settings:**
     *   **Material:** PLA
     *   **Layer Height:** 0.12 mm
     *   **Build Plate:** Smooth High-Temperature Plate recommended.
 *   **More Info:**
-    *   For a generic version without the logo and for full assembly instructions, visit the project page on MakerWorld: [Oriux Smart Weather Forecast Display](https://makerworld.com/en/models/1382304-oriux-smart-weather-forecast-display).
+    *   For a generic version without the logo and for full assembly instructions, visit the project page on MakerWorld: [Aura, Smart Weather Forecast Display](https://makerworld.com/en/models/1382304-aura-smart-weather-forecast-display).
 
 ## Advanced Section
 
