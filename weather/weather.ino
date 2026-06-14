@@ -9,14 +9,7 @@
 #include <Preferences.h>
 #include "esp_system.h"
 #include "translations.h"
-#include <DHT.h>
-#include <Adafruit_Sensor.h>
 
-#define DHTPIN 22
-#define DHTTYPE DHT22
-
-DHT dht(DHTPIN, DHTTYPE);
-//hello
 #define XPT2046_IRQ 36   // T_IRQ
 #define XPT2046_MOSI 32  // T_DIN
 #define XPT2046_MISO 39  // T_OUT
@@ -90,8 +83,6 @@ static lv_timer_t *temp_screen_wakeup_timer = nullptr;
 static lv_obj_t *lbl_today_temp;
 static lv_obj_t *lbl_today_feels_like;
 static lv_obj_t *img_today_icon;
-static lv_obj_t *lbl_room_temp;
-static lv_obj_t *lbl_room_humidity;
 static lv_obj_t *box_daily;
 static lv_obj_t *lbl_daily_day[5];
 static lv_obj_t *lbl_daily_high[5];
@@ -231,19 +222,6 @@ String urlencode(const String &str) {
   return encoded;
 }
 
-static void update_sensor_readings(lv_timer_t *timer) {
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
-
-  if (isnan(h) || isnan(t)) {
-    Serial.println(F("Failed to read from DHT sensor!"));
-    return;
-  }
-  const LocalizedStrings* strings = get_strings(current_language);
-  lv_label_set_text_fmt(lbl_room_temp, "%s: %.1f°C", strings->room_temp, t);
-  lv_label_set_text_fmt(lbl_room_humidity, "%s: %.1f%%", strings->room_humidity, h);
-}
-
 static void update_clock(lv_timer_t *timer) {
   struct tm timeinfo;
 
@@ -335,7 +313,6 @@ void setup() {
   TFT_eSPI tft = TFT_eSPI();
   tft.init();
   pinMode(LCD_BACKLIGHT_PIN, OUTPUT);
-  dht.begin();
 
   lv_init();
 
@@ -365,7 +342,6 @@ void setup() {
   wm.autoConnect(DEFAULT_CAPTIVE_SSID);
 
   lv_timer_create(update_clock, 1000, NULL);
-  lv_timer_create(update_sensor_readings, 5000, NULL);
 
   lv_obj_clean(lv_scr_act());
   create_ui();
@@ -453,21 +429,9 @@ void create_ui() {
   lv_obj_set_style_text_color(lbl_today_feels_like, lv_color_hex(0xe4ffff), LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_align(lbl_today_feels_like, LV_ALIGN_TOP_MID, 45, 95);
 
-  lbl_room_temp = lv_label_create(scr);
-  lv_label_set_text(lbl_room_temp, strings->room_temp);
-  lv_obj_set_style_text_font(lbl_room_temp, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_color(lbl_room_temp, lv_color_hex(0xe4ffff), LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_align(lbl_room_temp, LV_ALIGN_TOP_LEFT, 20, 120);
-
-  lbl_room_humidity = lv_label_create(scr);
-  lv_label_set_text(lbl_room_humidity, strings->room_humidity);
-  lv_obj_set_style_text_font(lbl_room_humidity, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_set_style_text_color(lbl_room_humidity, lv_color_hex(0xe4ffff), LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_align(lbl_room_humidity, LV_ALIGN_TOP_LEFT, 20, 135);
-
   box_daily = lv_obj_create(scr);
   lv_obj_set_size(box_daily, 220, 140);
-  lv_obj_align(box_daily, LV_ALIGN_TOP_LEFT, 10, 160);
+  lv_obj_align(box_daily, LV_ALIGN_TOP_LEFT, 10, 120);
   lv_obj_set_style_bg_color(box_daily, lv_color_hex(0x1f2534), LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(box_daily, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_set_style_radius(box_daily, 4, LV_PART_MAIN | LV_STATE_DEFAULT);
